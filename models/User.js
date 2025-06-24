@@ -2,6 +2,21 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
+    firstName: {
+      type: String,
+      required: true,
+      default:""
+    },
+    lastName: {
+      type: String,
+      required: true,
+      default:""
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      default:""
+    },
     email: {
       type: String,
       required: true,
@@ -12,8 +27,8 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     role: {
-      type: String,
-      enum: ["employer", "candidate"],
+      type: [String], // now an array of strings
+      enum: ["employer", "candidate", "contractor"], // allowed values
       required: true,
     },
     otp: {
@@ -29,6 +44,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    companyVerifiedToUser:{
+      type: Boolean,
+      default: false,
+    },
     subscription: {
       plan: {
         type: String,
@@ -37,6 +56,11 @@ const userSchema = new mongoose.Schema(
       },
       capabilities: [String],
     },
+    authComplete: {
+      type: Boolean,
+      default: false,
+    },
+
   },
   { timestamps: true }
 );

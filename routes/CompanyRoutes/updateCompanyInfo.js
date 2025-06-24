@@ -5,7 +5,7 @@ const User = require("../../models/User");
 const { authMiddleware } = require("../../middleware/auth");
 
 router.put("/", authMiddleware, async (req, res) => {
-  const { infoData, contactData, socialData } = req.body;
+  const { infoData, contactData, socialData, expertise } = req.body;
 
   try {
     // Get the logged-in user and their linked company ID
@@ -31,6 +31,8 @@ router.put("/", authMiddleware, async (req, res) => {
     company.infoData = infoData;
     company.contactData = contactData;
     company.socialData = socialData;
+    company.expertise = expertise || []
+
     await company.save();
 
     res.status(200).json({

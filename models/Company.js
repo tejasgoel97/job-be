@@ -68,6 +68,16 @@ const companySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+    expertise: {
+    type: [
+      {
+        category: { type: String },
+        subcategories: { type: [String], default: [] },
+        processes: { type: [String], default: [] },
+      },
+    ],
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("Company", companySchema);

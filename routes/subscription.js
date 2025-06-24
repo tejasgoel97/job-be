@@ -36,10 +36,18 @@ router.post("/upgrade", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "You already have this plan" });
     }
 
-    const plans = SUBSCRIPTION_PLANS[user.role];
+    // Combine capabilities from the target plan of all user roles
+    let combinedCapabilities = [];
+    for (const r of user.role) {
+      if (SUBSCRIPTION_PLANS[r] && SUBSCRIPTION_PLANS[r][plan]) {
+        combinedCapabilities.push(...SUBSCRIPTION_PLANS[r][plan].capabilities);
+      }
+    }
+    const uniqueCapabilities = [...new Set(combinedCapabilities)];
+
     user.subscription = {
       plan,
-      capabilities: plans[plan].capabilities,
+      capabilities: uniqueCapabilities,
     };
 
     await user.save();

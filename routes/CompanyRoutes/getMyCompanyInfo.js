@@ -12,15 +12,16 @@ router.get("/", authMiddleware, async (req, res) => {
     const user = await User.findById(req.user.id);
     console.log(user);
     if (!user || !user.companyId) {
-      return res.status(404).json({ error: "No company linked to this user" });
+      return res.status(200).json({ success:false, error: "No company linked to this user" });
     }
 
     const company = await Company.findById(user.companyId);
     if (!company) {
-      return res.status(404).json({ error: "Company not found" });
+      return res.status(200).json({success:false, error: "Company not found" });
     }
+        const companyObj = company.toObject();
 
-    res.status(200).json({ company });
+    res.status(200).json({success:true ,company:{...companyObj,compayVerifiedToUser: user.companyVerifiedToUser,companyId:company._id } });
   } catch (error) {
     console.error("Error fetching company:", error);
     res.status(500).json({ error: "Failed to fetch company details" });

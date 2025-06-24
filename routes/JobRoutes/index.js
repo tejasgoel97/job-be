@@ -44,19 +44,24 @@ router.get("/get-job/:id", async (req, res) => {
     const { id } = req.params;
     console.log("Fetching job with ID:", id);
 
-    const job = await Job.findById(id);
-
-    if (!job) {
+    const jobDoc = await Job.findById(id);
+    if (!jobDoc) {
       return res.status(404).json({ message: "Job not found" });
     }
+
+    const job = jobDoc.toObject(); // Convert to plain object
     const companyId = job.companyId;
     console.log("Company ID => ", companyId);
     const companyDetails = await Company.findById(companyId);
+    console.log(companyDetails )
     if (!companyDetails) {
       return res.status(404).json({ message: "Company not found" });
     }
+    let retunObj = {...job, companyDetails}
     job.companyDetails = companyDetails;
-    res.status(200).json({ job });
+
+    console.log("Job with company details:", retunObj);
+    res.status(200).json({ job:retunObj });
   } catch (error) {
     console.error("Error fetching job:", error);
     res.status(500).json({ message: "Error fetching job", error });

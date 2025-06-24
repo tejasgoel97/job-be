@@ -20,8 +20,12 @@ app.use("/api/jobs", require("./routes/JobRoutes"));
 app.use("/api/expertise", require("./routes/ExpertiseRoutes"));
 app.use("/api/company", require("./routes/CompanyRoutes"));
 
-
 app.use('/api/contracts', require('./routes/ContractRoutes')); // Or any other prefix you prefer
+app.use('/api/resume', require('./routes/CandidateResumeRoutes'));
+// In your main server file (e.g., server.js or app.js)
+
+// ... other app.use() statements
+app.use("/api/job-application", require("./routes/JobApplicationRoutes"));
 
 const PORT = process.env.PORT || 3000; // Define PORT here
 
