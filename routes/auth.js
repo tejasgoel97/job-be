@@ -47,7 +47,7 @@ router.post(
     }
 
     const { email, password, role, firstName, lastName, phoneNumber } = req.body;
-
+    console.log(role)
     try {
       let user = await User.findOne({ email });
 
@@ -174,15 +174,14 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     try {
       const user = await User.findOne({ email });
-      console.log("User Not Found");
       if (!user) {
         return res.status(400).json({ message: "User Not Found" });
       }
-
+      console.log(user)
       if (!user.authComplete) {
         return res
           .status(400)

@@ -13,7 +13,7 @@ const JobApplicationSchema = new mongoose.Schema(
     notesByEmployer: { type: String },
     currentStatus: {
       type: String,
-      enum: ["applied", "reviewed", "shortlisted", "interviewed", "offered", "hired", "rejected", "withdrawn"],
+      enum: ["applied", "hold", "shortlisted", "interviewed", "offered", "hired", "rejected", "withdrawn"],
       default: "applied",
     },
   },

@@ -75,8 +75,8 @@ router.get("/my-applications", authMiddleware, async (req, res) => {
   try {
     const candidateId = req.user.id;
     const applications = await JobApplication.find({ candidateId })
-      .populate({ path: 'jobId', select: 'title jobType location' })
-      .populate({ path: 'companyId', select: 'name logo' })
+      .populate({ path: 'jobId', select: 'title jobType location city country ' })
+      .populate({ path: 'companyId', select: 'infoData.companyName ' })
       .sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, applications });

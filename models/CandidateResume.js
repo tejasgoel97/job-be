@@ -33,7 +33,6 @@ const candidateResumeSchema = new mongoose.Schema(
     },
     currentDesignation:{type: String, default:"Software Engineer"},
     portfolioFile: { type: String }, // URL to the uploaded file
-    name: { type: String, required: true },
     description: { type: String, required: true },
     age: { type: String },
     totalExperienceYears: { type: String },

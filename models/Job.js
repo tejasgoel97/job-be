@@ -5,7 +5,6 @@ const JobSchema = new mongoose.Schema({
   customJobTitle: { type: String },
   department: { type: String, required: true },
   description: { type: String, required: true },
-  salary: { type: String, required: true },
   salaryFrom: { type: String, default:"" },
   salaryTo: { type: String, default:""},
   jobType: { type: String },
