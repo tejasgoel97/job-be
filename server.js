@@ -26,6 +26,7 @@ app.use('/api/resume', require('./routes/CandidateResumeRoutes'));
 
 // ... other app.use() statements
 app.use("/api/job-application", require("./routes/JobApplicationRoutes"));
+app.use("/api/contractor-profile", require("./routes/ContractorProfileRoutes"));
 
 const PORT = process.env.PORT || 3000; // Define PORT here
 

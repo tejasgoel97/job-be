@@ -11,7 +11,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
     // Find the contract by its ID and the user who created it, then update it.
     // This ensures that users can only update their own contracts.
     const updatedContract = await Contract.findOneAndUpdate(
-      { _id: id, createdBy: req.user.id }, // Security check
+      { _id: id, userId: req.user.id }, // Security check
       updatedData,
       { new: true, runValidators: true } // Return the updated document and run schema validators
     );

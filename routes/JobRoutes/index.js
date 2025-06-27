@@ -4,6 +4,7 @@ const Job = require("../../models/Job");
 const { authMiddleware } = require("../../middleware/auth");
 const myJobsRouter = require("./my-jobs");
 const updateJobRouter = require("./update-job");
+const searchJobsRouter = require("./search-jobs");
 const User = require("../../models/User");
 const Company = require("../../models/Company");
 
@@ -37,6 +38,7 @@ router.post("/create-job", authMiddleware, async (req, res) => {
 });
 router.use("/my-jobs", myJobsRouter);
 router.use("/update-job", updateJobRouter);
+router.use("/search-jobs", searchJobsRouter);
 
 // GET route to fetch a job by ID
 router.get("/get-job/:id", async (req, res) => {

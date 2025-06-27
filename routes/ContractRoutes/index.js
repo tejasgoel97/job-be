@@ -10,16 +10,19 @@ const updateContractRouter = require("./update-contract");
 // POST route to create a new contract
 router.post("/create-contract", authMiddleware, async (req, res) => {
   try {
-    const contractData = req.body;
+    let contractData = req.body;
 
     // Fetch user to check role and companyId
     const user = await User.findById(req.user.id).select("companyId role");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    contractData.createdBy = req.user.id;
+    contractData.companyId = user.companyId;
+
 
     // Ensure user has a role that can create contracts
-    if (!user.role.includes("employer") && !user.role.includes("contractor")) {
+    if ( !user.role.includes("employer")) {
       return res.status(403).json({ error: "User does not have permission to create contracts." });
     } else if (!user.companyId) {
       return res.status(404).json({ error: "No company linked to this user" });
@@ -27,7 +30,7 @@ router.post("/create-contract", authMiddleware, async (req, res) => {
 
     const newContract = new Contract({
       ...contractData,
-      createdBy: req.user.id,
+      userId: req.user.id,
       companyId: user.companyId,
     });
 
