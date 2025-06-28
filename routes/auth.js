@@ -187,7 +187,9 @@ router.post(
           .status(400)
           .json({ message: "Please verify your email first" });
       }
-
+      if(!user.role.includes(role)){
+        return res.status(400).json({ message: `Your Profile is not of a ${role.toUpperCase()} role` });
+      }
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid credentials" });

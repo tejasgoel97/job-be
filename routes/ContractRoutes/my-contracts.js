@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { authMiddleware } = require("../../middleware/auth");
 const Contract = require("../../models/Contract");
+const mongoose = require("mongoose");
 
 // GET route to fetch user's contracts
 router.get("/", authMiddleware, async (req, res) => {
@@ -28,10 +29,33 @@ router.get("/", authMiddleware, async (req, res) => {
       }
     }
 
-    const contracts = await Contract.find({
-      createdBy: req.user.id,
-      ...dateFilter,
-    }).sort({ createdAt: -1 }); // Sort by most recent first
+    const contracts = await Contract.aggregate([
+      {
+        $match: {
+          createdBy: new mongoose.Types.ObjectId(req.user.id),
+          ...dateFilter,
+        },
+      },
+      {
+        $lookup: {
+          from: "contractapplications", // collection name for ContractApplication model
+          localField: "_id",
+          foreignField: "contractId",
+          as: "applications",
+        },
+      },
+      {
+        $addFields: {
+          applicationCount: { $size: "$applications" },
+        },
+      },
+      {
+        $project: {
+          applications: 0, // Exclude the applications array from the final output
+        },
+      },
+      { $sort: { createdAt: -1 } }, // Sort by most recent first
+    ]);
 
     res.status(200).json({
       success: true,

@@ -11,7 +11,9 @@ connectDB();
 
 // Middleware
 app.use(express.json());
-
+app.get("health", (req, res) => {
+  res.send("OK");
+})
 // Routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/subscription", require("./routes/subscription"));

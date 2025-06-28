@@ -1,9 +1,8 @@
 const express = require("express");
-
 const router = express.Router();
-
 const { authMiddleware } = require("../../middleware/auth");
 const Job = require("../../models/Job");
+const mongoose = require("mongoose");
 
 // GET route to fetch user's jobs
 router.get("/", authMiddleware, async (req, res) => {
@@ -31,10 +30,33 @@ router.get("/", authMiddleware, async (req, res) => {
       }
     }
 
-    const jobs = await Job.find({
-      createdBy: req.user.id,
-      ...dateFilter,
-    }).sort({ createdAt: -1 }); // Sort by most recent first
+    const jobs = await Job.aggregate([
+      {
+        $match: {
+          createdBy: new mongoose.Types.ObjectId(req.user.id),
+          ...dateFilter,
+        },
+      },
+      {
+        $lookup: {
+          from: "jobapplications", // the collection name for JobApplication model
+          localField: "_id",
+          foreignField: "jobId",
+          as: "applications",
+        },
+      },
+      {
+        $addFields: {
+          applicationCount: { $size: "$applications" },
+        },
+      },
+      {
+        $project: {
+          applications: 0, // Exclude the applications array from the final output
+        },
+      },
+      { $sort: { createdAt: -1 } }, // Sort by most recent first
+    ]);
 
     res.status(200).json({
       success: true,

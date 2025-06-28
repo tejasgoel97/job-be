@@ -112,17 +112,21 @@ router.get("/received-applications-for-job/:jobId", authMiddleware, async (req, 
     const jobCreatorEmployerId = req.user.id;
 
     // Verify the job was posted by this employer to ensure authorization
-    const job = await Job.findOne({ _id: jobId, postedBy: jobCreatorEmployerId });
+    const job = await Job.findOne({ _id: jobId, createdBy: jobCreatorEmployerId });
     if (!job) {
       return res.status(404).json({ success: false, message: "Job not found or you do not have permission to view its applications." });
     }
 
     const applications = await JobApplication.find({ jobId })
-      .populate({ path: 'candidateId', select: 'name email' })
+      .populate({ path: 'candidateId', select: 'firstName lastName currentDesignation contactInfo currentSalary email' })
       .populate('candidateResumeId')
       .sort({ createdAt: -1 });
 
-    res.status(200).json({ success: true, applications });
+    const returnData = applications.map(app => ({
+      ...app.toObject(),
+      }));
+
+res.status(200).json({ success: true, applications: returnData, jobTitle: job.title });
   } catch (error) {
     console.error("Error fetching applications for a specific job:", error);
     if (error.name === 'CastError') {

@@ -6,6 +6,7 @@ const User = require("../../models/User");
 const Company = require("../../models/Company");
 const myContractsRouter = require("./my-contracts");
 const updateContractRouter = require("./update-contract");
+const searchContractsRouter = require("./search-contracts");
 
 // POST route to create a new contract
 router.post("/create-contract", authMiddleware, async (req, res) => {
@@ -77,5 +78,6 @@ router.get("/get-contract/:id", async (req, res) => {
 
 router.use("/my-contracts", myContractsRouter);
 router.use("/update-contract", updateContractRouter);
+router.use("/search-contracts", searchContractsRouter);
 
 module.exports = router;
