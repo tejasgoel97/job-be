@@ -7,15 +7,15 @@ router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const updatedData = req.body;
-
+    console.log(updatedData);
     // Find the contract by its ID and the user who created it, then update it.
     // This ensures that users can only update their own contracts.
     const updatedContract = await Contract.findOneAndUpdate(
-      { _id: id, userId: req.user.id }, // Security check
+      { _id: id, createdBy: req.user.id }, // Security check
       updatedData,
       { new: true, runValidators: true } // Return the updated document and run schema validators
     );
-
+    console.log(updatedContract);
     if (!updatedContract) {
       // If no contract is found, it's either a wrong ID or the user doesn't have permission.
       return res.status(404).json({ message: "Contract not found or user not authorized to update." });

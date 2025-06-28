@@ -18,6 +18,15 @@ const contractSchema = new mongoose.Schema(
       type: String,
       required: [true, "Contract type is required."],
     },
+    contractTypes: {
+      type: [
+        {
+          name: { type: String, required: true },
+          subTypes: [{ type: String }],
+        },
+      ],
+      default: [],
+    },
     address: {
       country: { type: String },
       city: { type: String },

@@ -63,7 +63,7 @@ router.get("/get-contract/:id", async (req, res) => {
     if (!contract) {
       return res.status(404).json({ message: "Contract not found" });
     }
-
+    console.log(contract);
     const contractObject = contract.toObject();
     contractObject.companyDetails = contractObject.companyId;
     delete contractObject.companyId;
