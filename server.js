@@ -11,7 +11,7 @@ connectDB();
 
 // Middleware
 app.use(express.json());
-app.get("health", (req, res) => {
+app.get("/health", (req, res) => {
   res.send("OK");
 })
 // Routes
