@@ -12,7 +12,9 @@ connectDB();
 // Middleware
 app.use(express.json());
 app.get("/health", (req, res) => {
+  console.log("OKAY")
   res.send("OK");
+
 })
 // Routes
 app.use("/api/auth", require("./routes/auth"));
