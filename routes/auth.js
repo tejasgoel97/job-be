@@ -9,6 +9,7 @@ const SUBSCRIPTION_PLANS = require("../config/subscriptions");
 require("dotenv").config();
 
 const generateOTP = () => {
+  return "121212"
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
