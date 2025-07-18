@@ -1,0 +1,20 @@
+service: job-portal
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  httpApi:
+    cors:
+      allowedOrigins:
+        - '*'
+      allowedHeaders:
+        - '*'
+      allowedMethods:
+        - '*'
+
+functions:
+  app:
+    handler: lambda.handler
+    events:
+      - httpApi: '*'
