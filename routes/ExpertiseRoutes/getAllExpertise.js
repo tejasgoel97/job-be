@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
             { name: "SG/CI foundry" },
             { name: "ADI" },
             { name: "Alloy steel" },
-            { name: "Others" },
+            
           ],
           keyProcesses: [
             { name: "Green Sand Molding" },
@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
             { name: "Sweep Molding" },
             { name: "Wax Molding" },
             { name: "Loss Foam Molding" },
-            { name: "Other" },
+            
           ],
           _id: "662a1234bca9d51f7b4a8ef3",
         },
@@ -40,14 +40,14 @@ router.get("/", async (req, res) => {
             { name: "Copper" },
             { name: "Brass" },
             { name: "Gun Metal" },
-            { name: "Others" },
+            
           ],
           keyProcesses: [
             { name: "High Pressure Die Casting" },
             { name: "Low Pressure Die Casting" },
             { name: "Gravity Die Casting" },
             { name: "Sand Casting Process" },
-            { name: "Other" },
+            
           ],
           _id: "662a1234bca9d51f7b4a8ef4",
         },

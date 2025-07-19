@@ -32,6 +32,7 @@ app.use('/api/resume', require('./routes/CandidateResumeRoutes'));
 app.use("/api/job-application", require("./routes/JobApplicationRoutes"));
 app.use("/api/contractor-profile", require("./routes/ContractorProfileRoutes"));
 app.use("/api/contract-application", require("./routes/ContractApplicationRoutes"));
+app.use("/api/upload", require("./routes/UploadRoutes"));
 
 const PORT = process.env.PORT || 3000; // Define PORT here
 
