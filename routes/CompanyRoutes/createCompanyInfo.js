@@ -6,10 +6,12 @@ const User = require("../../models/User");
 const { authMiddleware } = require("../../middleware/auth");
 
 router.post("/", authMiddleware, async (req, res) => {
-  const { infoData, contactData, socialData } = req.body;
+  const { infoData, contactData, socialData, companyLogo, companyPhotos } = req.body;
 
   try {
     const newCompany = new Company({
+      companyLogo,
+      companyPhotos,
       createdBy: req.user.id,
       infoData,
       contactData,

@@ -20,7 +20,7 @@ router.get("/", authMiddleware, async (req, res) => {
     });
 
     if (!company) {
-      return res.status(404).json({ error: "Company not found" });
+      return res.status(200).json({ success:false, error: "Company not found" });
     }
 
     const companyObj = company.toObject();

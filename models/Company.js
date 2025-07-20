@@ -1,5 +1,19 @@
 const mongoose = require("mongoose");
 
+
+const companyPhotoSchema = new mongoose.Schema(
+  {
+    url: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+  },
+  { _id: false } // Don't create _id for each subdocument
+);
 const companySchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -12,7 +26,15 @@ const companySchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  infoData: {
+  companyLogo: {
+    type: String,
+    default: "",
+  },
+  companyPhotos: {
+    type: Map,
+    of: [companyPhotoSchema],
+  },
+    infoData: {
     companyName: { type: String, required: true },
     aboutCompany: { type: String },
     gstNo: { type: String },
@@ -25,7 +47,7 @@ const companySchema = new mongoose.Schema({
     manufacturingCapacity: { type: String },
     yearOfEstablishment: { type: String },
     isoCertifications: { type: String },
-    keyProducts: { type: String },
+    keyProducts: { type: [String], default: [] },
     website: { type: String },
   },
   contactData: {

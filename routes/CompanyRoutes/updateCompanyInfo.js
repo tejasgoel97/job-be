@@ -5,7 +5,14 @@ const User = require("../../models/User");
 const { authMiddleware } = require("../../middleware/auth");
 
 router.put("/", authMiddleware, async (req, res) => {
-  const { infoData, contactData, socialData, expertise } = req.body;
+  const {
+    infoData,
+    contactData,
+    socialData,
+    expertise,
+    companyLogo,
+    companyPhotos,
+  } = req.body;
 
   try {
     // Get the logged-in user and their linked company ID
@@ -26,12 +33,16 @@ router.put("/", authMiddleware, async (req, res) => {
         .status(403)
         .json({ error: "You are not authorized to update this company" });
     }
-
+    console.log(companyPhotos);
     // Proceed with update
+    company.companyLogo = companyLogo;
+    company.companyPhotos = companyPhotos;
     company.infoData = infoData;
     company.contactData = contactData;
     company.socialData = socialData;
-    company.expertise = expertise || []
+    company.expertise = expertise || [];
+    console.log(JSON.stringify(company, null, 2));
+    company.markModified("companyPhotos"); // <- THIS is key
 
     await company.save();
 

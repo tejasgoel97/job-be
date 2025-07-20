@@ -20,6 +20,10 @@ router.get("/", authMiddleware, async (req, res) => {
       return res.status(200).json({success:false, error: "Company not found" });
     }
         const companyObj = company.toObject();
+// Convert Map to object
+if (companyObj.companyPhotos instanceof Map) {
+  companyObj.companyPhotos = Object.fromEntries(companyObj.companyPhotos);
+}
 
     res.status(200).json({success:true ,company:{...companyObj,compayVerifiedToUser: user.companyVerifiedToUser,companyId:company._id } });
   } catch (error) {
