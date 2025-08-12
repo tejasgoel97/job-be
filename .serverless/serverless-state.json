@@ -187,7 +187,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/job-portal/dev/1752252716136-2025-07-11T16:51:56.136Z/job-portal.zip"
+                "S3Key": "serverless/job-portal/dev/1754135517438-2025-08-02T11:51:57.438Z/job-portal.zip"
               },
               "Handler": "lambda.handler",
               "Runtime": "nodejs18.x",
@@ -205,14 +205,14 @@
               "AppLogGroup"
             ]
           },
-          "AppLambdaVersion9Or6EQT2OKS7mid8yrXqlguaYlcZcw0CdEVQiTnQA": {
+          "AppLambdaVersionj6qufrRuuP8iZHxf4XCxRRwS9sNqDeJ3Ovo5NORLnM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "t02kIVkfE+OlMa8kmQi+xBCxtbxAeVYcWVBsTl37vts="
+              "CodeSha256": "41gLJjKEwWqro5/19Es69CJzPGz8ihEMpKZ80teqkD8="
             }
           },
           "HttpApi": {
@@ -331,7 +331,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersion9Or6EQT2OKS7mid8yrXqlguaYlcZcw0CdEVQiTnQA"
+              "Ref": "AppLambdaVersionj6qufrRuuP8iZHxf4XCxRRwS9sNqDeJ3Ovo5NORLnM"
             },
             "Export": {
               "Name": "sls-job-portal-dev-AppLambdaFunctionQualifiedArn"
@@ -473,7 +473,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersion9Or6EQT2OKS7mid8yrXqlguaYlcZcw0CdEVQiTnQA"
+        "versionLogicalId": "AppLambdaVersionj6qufrRuuP8iZHxf4XCxRRwS9sNqDeJ3Ovo5NORLnM"
       }
     },
     "configValidationMode": "warn",
@@ -492,7 +492,7 @@
     "artifact": "C:\\Users\\tejas\\Desktop\\JOB-PRO\\REACT\\job-portal-backend\\.serverless\\job-portal.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/job-portal/dev/1752252716136-2025-07-11T16:51:56.136Z",
+    "artifactDirectoryName": "serverless/job-portal/dev/1754135517438-2025-08-02T11:51:57.438Z",
     "artifact": "job-portal.zip"
   }
 }

@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
     "@vendia/serverless-express": "^4.12.6",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.10.0",
@@ -21,10 +22,12 @@
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "fs": "^0.0.1-security",
+    "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
     "multer": "^2.0.2",
     "nodemailer": "^6.10.0",
+    "npm": "^11.5.2",
     "path": "^0.12.7"
   },
   "devDependencies": {

@@ -45,6 +45,7 @@ const companySchema = new mongoose.Schema({
     factoryLicenseNo: { type: String },
     typeOfCasting: [String],
     manufacturingCapacity: { type: String },
+    yearlyTurnover: { type: String },
     yearOfEstablishment: { type: String },
     isoCertifications: { type: String },
     keyProducts: { type: [String], default: [] },

@@ -4,7 +4,6 @@ const User = require("../../models/User");
 const Company = require("../../models/Company");
 const { authMiddleware } = require("../../middleware/auth");
 
-Company;
 router.get("/", authMiddleware, async (req, res) => {
   try {
     // Get the user and their company ID

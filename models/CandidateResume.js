@@ -19,7 +19,6 @@ const educationSchema = new mongoose.Schema({
   marks: { type: String },
   cgpa: { type: String },
   description: { type: String },
-  editing: { type: Boolean },
   id: { type: Number }
 }, { _id: false });
 

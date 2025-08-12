@@ -9,7 +9,6 @@ const SUBSCRIPTION_PLANS = require("../config/subscriptions");
 require("dotenv").config();
 
 const generateOTP = () => {
-  return "121212"
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
@@ -110,7 +109,8 @@ router.post(
       });
 
       await user.save();
-      // await EmailService.sendOTP(email, otp);
+      await EmailService.sendOtp(email, otp, "Register");
+      console.log("User registered and OTP sent:", user);
 
       res.status(201).json({ message: "User registered. Please verify OTP" });
     } catch (error) {
