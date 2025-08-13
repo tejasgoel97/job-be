@@ -30,6 +30,14 @@ router.post("/create-job", authMiddleware, async (req, res) => {
       companyId: companyId,
     });
     await newJob.save();
+    
+    // Get company details for the alert
+    const company = await Company.findById(companyId);
+    
+    // Emit event for alert creation (non-blocking)
+    const { emitNewJobAlert } = require('../../services/alertService');
+    emitNewJobAlert(newJob, company);
+    
     res.status(201).json({ message: "Job posted successfully", job: newJob });
   } catch (error) {
     console.log(error);

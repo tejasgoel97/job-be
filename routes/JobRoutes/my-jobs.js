@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 // GET route to fetch user's jobs
 router.get("/", authMiddleware, async (req, res) => {
-  console.log("in Job Roter");
+  console.log("in Job Router");
   try {
     const { timeFilter } = req.query; // Optional: to filter by time period
     let dateFilter = {};

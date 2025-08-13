@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const JobSchema = new mongoose.Schema({
-  title: { type: String, required: true },
+  title: { type: String, required: true, index: 'text' }, // Text index for search
   customJobTitle: { type: String },
   department: { type: String, required: true },
   description: { type: String, required: true },

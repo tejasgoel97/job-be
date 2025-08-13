@@ -10,7 +10,145 @@ if (!process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 }
 
+// Helper function to send emails
+const sendEmail = async (msg) => {
+  try {
+    await sgMail.send(msg);
+  } catch (error) {
+    console.error("Email send error:", error);
+    throw error;
+  }
+};
+
 class EmailServices {
+  /**
+   * Send new job alert email
+   * @param {string} email - Recipient email
+   * @param {Object} jobData - Job details
+   * @returns {Promise<void>}
+   */
+
+
+  static async sendEmail(msg) {
+     try {
+    await sgMail.send(msg);
+  } catch (error) {
+    console.error("Email send error:", error);
+    throw error;
+  }
+  }
+
+  static async sendNewJobAlert(email, jobData) {
+    if (!email) throw new Error("Email is required");
+    if (!jobData) throw new Error("Job data is required");
+
+    const { subject, html, text } = EmailServices.#buildNewJobAlertContent(jobData);
+
+    const msg = {
+      to: email,
+      from: { email: FROM_EMAIL, name: APP_NAME },
+      subject,
+      html,
+      text,
+    };
+
+    return this.sendEmail(msg);
+  }
+
+  /**
+   * Send application status change alert email
+   * @param {string} email - Recipient email
+   * @param {Object} applicationData - Application details
+   * @returns {Promise<void>}
+   */
+  static async sendStatusChangeAlert(email, applicationData) {
+    if (!email) throw new Error("Email is required");
+    if (!applicationData) throw new Error("Application data is required");
+
+    const { subject, html, text } = EmailServices.#buildStatusChangeAlertContent(applicationData);
+
+    const msg = {
+      to: email,
+      from: { email: FROM_EMAIL, name: APP_NAME },
+      subject,
+      html,
+      text,
+    };
+
+    return this.sendEmail(msg);
+  }
+
+  static #buildNewJobAlertContent(jobData) {
+    const subject = `New Job Alert: ${jobData.title} at ${jobData.companyName}`;
+    
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>New Job Opportunity</h2>
+        <h3>${jobData.title}</h3>
+        <div style="margin: 20px 0;">
+          <p><strong>Company:</strong> ${jobData.companyName}</p>
+          <p><strong>Department:</strong> ${jobData.department}</p>
+          <p><strong>Location:</strong> ${jobData.jobLocation}</p>
+          ${jobData.salaryFrom && jobData.salaryTo ? 
+            `<p><strong>Salary Range:</strong> ${jobData.salaryCurrency} ${jobData.salaryFrom} - ${jobData.salaryTo}</p>` 
+            : ''}
+        </div>
+        <div style="margin: 20px 0;">
+          <a href="${process.env.FRONTEND_URL}/jobs/${jobData.jobId}" 
+             style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            View Job Details
+          </a>
+        </div>
+      </div>
+    `;
+
+    const text = `
+      New Job Opportunity: ${jobData.title}
+      Company: ${jobData.companyName}
+      Department: ${jobData.department}
+      Location: ${jobData.jobLocation}
+      ${jobData.salaryFrom && jobData.salaryTo ? 
+        `Salary Range: ${jobData.salaryCurrency} ${jobData.salaryFrom} - ${jobData.salaryTo}` 
+        : ''}
+      
+      View the job at: ${process.env.FRONTEND_URL}/jobs/${jobData.jobId}
+    `;
+
+    return { subject, html, text };
+  }
+
+  static #buildStatusChangeAlertContent(applicationData) {
+    const subject = `Application Status Update: ${applicationData.jobTitle}`;
+    
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Application Status Update</h2>
+        <h3>${applicationData.jobTitle}</h3>
+        <div style="margin: 20px 0;">
+          <p><strong>Company:</strong> ${applicationData.companyName}</p>
+          <p><strong>New Status:</strong> <span style="color: #007bff; font-weight: bold;">${applicationData.changedStatus}</span></p>
+          <p><strong>Department:</strong> ${applicationData.jobDepartment}</p>
+        </div>
+        <div style="margin: 20px 0;">
+          <a href="${process.env.FRONTEND_URL}/applications/${applicationData.jobId}" 
+             style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            View Application
+          </a>
+        </div>
+      </div>
+    `;
+
+    const text = `
+      Application Status Update: ${applicationData.jobTitle}
+      Company: ${applicationData.companyName}
+      New Status: ${applicationData.changedStatus}
+      Department: ${applicationData.jobDepartment}
+      
+      View your application at: ${process.env.FRONTEND_URL}/applications/${applicationData.jobId}
+    `;
+
+    return { subject, html, text };
+  }
   /**
    * Send an OTP email for a specific reason (e.g., "Register")
    * @param {string} email - Recipient email

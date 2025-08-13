@@ -4,6 +4,7 @@ const JobApplication = require("../models/JobApplication");
 const Job = require("../models/Job");
 const { authMiddleware } = require("../middleware/auth");
 const CandidateResume = require("../models/CandidateResume");
+const Company = require("../models/Company");
 
 // 1. Apply for a Job
 // POST /api/job-application/apply
@@ -167,6 +168,13 @@ router.patch("/update-status/:applicationId", authMiddleware, async (req, res) =
         }
 
         const updatedApplication = await application.save();
+
+        // Emit event for status change alert (non-blocking)
+        const job = await Job.findById(application.jobId);
+        const company = await Company.findById(job.companyId);
+        const { emitStatusChangeAlert } = require('../services/alertService');
+        console.log("Company ID => ", company)
+        emitStatusChangeAlert(updatedApplication, job, company);
 
         res.status(200).json({ success: true, message: "Application status updated.", application: updatedApplication });
     } catch (error) {

@@ -65,8 +65,8 @@ router.get("/me", authMiddleware, async (req, res) => {
 
 // @route   GET /api/resume/:id
 // @desc    Get a resume by its ID
-// @access  Private (for logged-in users like employers)
-router.get("/:id", authMiddleware, async (req, res) => {
+// @access  Open 
+router.get("/:id",  async (req, res) => {
   try {
     const resume = await CandidateResume.findById(req.params.id);
 
