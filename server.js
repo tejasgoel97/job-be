@@ -24,9 +24,9 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/subscription", require("./routes/subscription"));
 app.use("/api/jobs", require("./routes/JobRoutes"));
-
 app.use("/api/expertise", require("./routes/ExpertiseRoutes"));
 app.use("/api/company", require("./routes/CompanyRoutes"));
+app.use("/api/main", require("./routes/MainPageRoutes"));
 
 app.use('/api/contracts', require('./routes/ContractRoutes')); // Or any other prefix you prefer
 app.use('/api/resume', require('./routes/CandidateResumeRoutes'));

@@ -3,13 +3,24 @@ const express = require("express");
 const router = express.Router();
 const Job = require("../../models/Job");
 const Company = require("../../models/Company");
-
+const { currencyOptions } = require("./CurrencyOptions");
 
 router.get("/", async (req, res) => {
   try {
     console.log(req.query);
 
-    const { searchText, locationText, companyText, expertise } = req.query;
+    const {
+      searchText,
+      locationText,
+      companyText,
+      expertise,
+      jobType,
+      datePosted,
+      experienceLevel,
+      salaryCurrency,
+      salaryMin,
+      salaryMax,
+    } = req.query;
     const andConditions = [];
 
     if (searchText) {
@@ -62,9 +73,90 @@ router.get("/", async (req, res) => {
       });
     }
 
+    // Job Type filter
+    if (jobType && Array.isArray(jobType) && jobType.length > 0) {
+      let jobTypes = jobType.map((originalString) => {
+        let stringWithSpaces = originalString.replace(/_/g, " ");
+        let titleCaseString = stringWithSpaces
+          .toLowerCase()
+          .split(" ")
+          .map(function (word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          })
+          .join(" ");
+        return titleCaseString;
+      });
+      andConditions.push({ jobType: { $in: jobTypes } });
+    }
+
+    // Date Posted filter
+    if (datePosted) {
+      const currentDate = new Date();
+      let dateFilter;
+
+      switch (datePosted) {
+        case "1h":
+          dateFilter = new Date(currentDate - 60 * 60 * 1000);
+          break;
+        case "24h":
+          dateFilter = new Date(currentDate - 24 * 60 * 60 * 1000);
+          break;
+        case "7d":
+          dateFilter = new Date(currentDate - 7 * 24 * 60 * 60 * 1000);
+          break;
+        case "14d":
+          dateFilter = new Date(currentDate - 14 * 24 * 60 * 60 * 1000);
+          break;
+        case "30d":
+          dateFilter = new Date(currentDate - 30 * 24 * 60 * 60 * 1000);
+          break;
+      }
+
+      if (dateFilter) {
+        andConditions.push({ createdAt: { $gte: dateFilter } });
+      }
+    }
+
+    // Experience Level filter
+    if (experienceLevel) {
+      andConditions.push({ minExperience: { $lte: experienceLevel } });
+    }
+
+    // Salary filter
+    if (salaryMin || salaryMax) {
+      const salaryFilter = {};
+
+      if (salaryCurrency && salaryMin) {
+        const currency = currencyOptions.find(
+          (c) => c.value === salaryCurrency
+        );
+        if (currency) {
+          const salaryMinINR = Number(salaryMin) * currency.rateToINR;
+          salaryFilter["fromSalaryINR"] = { $gte: salaryMinINR };
+        }
+      }
+
+      if (salaryCurrency && salaryMax) {
+        const currency = currencyOptions.find(
+          (c) => c.value === salaryCurrency
+        );
+        if (currency) {
+          const salaryMaxINR = Number(salaryMax) * currency.rateToINR;
+          salaryFilter["toSalaryINR"] = { $lte: salaryMaxINR };
+        }
+      }
+
+      if (Object.keys(salaryFilter).length > 0) {
+        andConditions.push(salaryFilter);
+      }
+    }
+    console.log("AND Conditions:", andConditions);
     const query = andConditions.length > 0 ? { $and: andConditions } : {};
 
-    const jobs = await Job.find(query).populate("companyId").sort({ createdAt: -1 }).lean();
+    const jobs = await Job.find(query)
+      .populate("companyId")
+      .sort({ createdAt: -1 })
+      .lean();
 
     const results = jobs.map((job) => {
       if (job.companyId) {
@@ -77,7 +169,9 @@ router.get("/", async (req, res) => {
     res.status(200).json({ jobs: results });
   } catch (error) {
     console.error("Error searching jobs:", error);
-    res.status(500).json({ message: "Error searching jobs", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error searching jobs", error: error.message });
   }
 });
 
