@@ -7,6 +7,7 @@ const PageViewHourSchema = new Schema({
   pageType:  { type: String, enum: ["candidate","job","company"], required: true },
   pageId:    { type: String, required: true },
   hour:      { type: Date, required: true },                // UTC start of hour
+  ownerId:  { type: String, default: null }, // optional, for future use (e.g., if tracking user-specific pages)
   // optional fields:
   visits:    { type: Number, default: 1 },
   firstSeen: { type: Date, default: Date.now }

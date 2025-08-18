@@ -32,6 +32,7 @@ app.use('/api/contracts', require('./routes/ContractRoutes')); // Or any other p
 app.use('/api/resume', require('./routes/CandidateResumeRoutes'));
 app.use('/api/dashboard', require('./routes/DashboardRoutes'));
 app.use('/api/alerts', require('./routes/AlertRoutes'));
+app.use('/api/notifications', require('./routes/NotificationRoutes'));
 // In your main server file (e.g., server.js or app.js)
 
 // ... other app.use() statements
